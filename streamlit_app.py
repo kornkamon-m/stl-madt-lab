@@ -7,7 +7,7 @@ st.subheader("Get guidance for setting up your food factory with ease!")
 # หน้าหลัก: เมนู
 menu = st.sidebar.radio(
     "Navigation",
-    ["Homepage", "Input Form", "Document Generator", "Progress Tracker"]
+    ["Homepage", "Input Form", "Document Generator"]
 )
 
 if menu == "Homepage":
@@ -63,10 +63,3 @@ elif menu == "Document Generator":
             file_name="process_flow_diagram.pdf",
             mime="application/pdf"
         )
-
-elif menu == "Progress Tracker":
-    st.header("Progress Tracker")
-    st.write("Track the progress of your factory setup process:")
-    st.progress(50)  # Mock progress bar
-    st.write("Current Step: Reviewing submitted documents.")
-    st.info("Next Step: Submit the Environmental Impact Plan.")
