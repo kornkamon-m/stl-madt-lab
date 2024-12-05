@@ -43,6 +43,28 @@ elif menu == "Input Form":
         st.write(f"- Factory Area: {factory_area} sqm")
         st.write(f"- Budget: {budget} million THB")
         st.write(f"- Environmental Plan: {environmental_plan}")
+        
+        # คำแนะนำเกี่ยวกับขั้นตอนการดำเนินงาน
+        st.header("Recommended Steps for Your Factory Setup")
+        st.write("Based on your inputs, here are the suggested steps:")
+        if food_type == "Frozen Food":
+            st.write("""
+            1. Ensure compliance with GMP and HACCP standards.
+            2. Submit a factory layout plan that includes cold storage areas.
+            3. Prepare an Environmental Impact Plan if the area exceeds 1,000 sqm.
+            """)
+        elif food_type == "Ready-to-eat":
+            st.write("""
+            1. Focus on hygienic design of the production area.
+            2. Obtain a Food Safety License from the FDA.
+            3. Prepare a waste management plan for organic waste.
+            """)
+        else:
+            st.write("""
+            1. Consult a legal advisor for specific regulatory requirements.
+            2. Design your factory layout with appropriate zoning.
+            3. Ensure worker safety measures are in place.
+            """)
 
 elif menu == "Document Generator":
     st.header("Document Generator")
