@@ -1,87 +1,43 @@
 import streamlit as st
 
-# ตั้งค่าหน้าหลัก
+# หน้า Landing Page
 st.title("AI Advisory for Food Factory Setup")
-st.subheader("Get guidance for setting up your food factory with ease!")
+st.write("ระบบแนะนำข้อกำหนดทางกฎหมายและขั้นตอนการขออนุญาตจัดตั้งโรงงานอาหารในประเทศไทย")
+if st.button("เริ่มต้นใช้งาน"):
+    st.session_state.page = "input"
 
-# หน้าหลัก: เมนู
-menu = st.sidebar.radio(
-    "Navigation",
-    ["Homepage", "Input Form", "Document Generator"]
-)
+# หน้า Input ข้อมูล
+if st.session_state.get('page') == "input":
+    st.header("กรอกข้อมูลโรงงาน")
+    factory_type = st.selectbox("เลือกประเภทอาหาร", ["ผลไม้แปรรูป", "น้ำดื่มบรรจุขวด", "ผลิตภัณฑ์นม", "อื่นๆ"])
+    production_capacity = st.number_input("กำลังการผลิต (ตัน/วัน)", min_value=0)
+    horsepower = st.number_input("ขนาดแรงม้า (HP)", min_value=0)
+    workers = st.number_input("จำนวนแรงงาน", min_value=0)
+    location = st.selectbox("จังหวัดที่ตั้งโรงงาน", ["กรุงเทพฯ", "ชลบุรี", "สมุทรสาคร", "อื่นๆ"])
 
-if menu == "Homepage":
-    st.header("Welcome to AI Advisory System")
-    st.write("""
-    This system provides step-by-step guidance to help you with:
-    - Preparing the required documents
-    - Complying with legal and environmental regulations
-    - Generating customized documents
-    """)
+    if st.button("ค้นหาข้อกำหนดทางกฎหมาย"):
+        st.session_state.page = "output"
 
-elif menu == "Input Form":
-    st.header("Factory Information Form")
-    # แบบฟอร์มรวบรวมข้อมูล
-    factory_name = st.text_input("Factory Name")
-    food_type = st.selectbox(
-        "Type of Food",
-        ["Frozen Food", "Ready-to-eat", "Snacks", "Others"]
-    )
-    factory_area = st.number_input("Factory Area (sqm)", min_value=1)
-    budget = st.number_input("Budget (in million THB)", min_value=0.1, step=0.1)
-    environmental_plan = st.radio(
-        "Do you have an Environmental Impact Plan?",
-        ["Yes", "No"]
-    )
-    submit = st.button("Submit Information")
+# หน้า Output
+if st.session_state.get('page') == "output":
+    st.header("ผลลัพธ์การวิเคราะห์")
+    st.subheader("ข้อกำหนดทางกฎหมาย")
+    st.write("- พระราชบัญญัติโรงงาน พ.ศ. 2535")
+    st.write("- มาตรฐาน GMP/HACCP")
+    st.write("- ต้องทำ EIA: **ไม่จำเป็น** (ขึ้นกับกำลังการผลิต)")
 
-    if submit:
-        st.success("Information submitted successfully!")
-        st.write("Your inputs:")
-        st.write(f"- Factory Name: {factory_name}")
-        st.write(f"- Food Type: {food_type}")
-        st.write(f"- Factory Area: {factory_area} sqm")
-        st.write(f"- Budget: {budget} million THB")
-        st.write(f"- Environmental Plan: {environmental_plan}")
-        
-        # คำแนะนำเกี่ยวกับขั้นตอนการดำเนินงาน
-        st.header("Recommended Steps for Your Factory Setup")
-        st.write("Based on your inputs, here are the suggested steps:")
-        if food_type == "Frozen Food":
-            st.write("""
-            1. Ensure compliance with GMP and HACCP standards.
-            2. Submit a factory layout plan that includes cold storage areas.
-            3. Prepare an Environmental Impact Plan if the area exceeds 1,000 sqm.
-            """)
-        elif food_type == "Ready-to-eat":
-            st.write("""
-            1. Focus on hygienic design of the production area.
-            2. Obtain a Food Safety License from the FDA.
-            3. Prepare a waste management plan for organic waste.
-            """)
-        else:
-            st.write("""
-            1. Consult a legal advisor for specific regulatory requirements.
-            2. Design your factory layout with appropriate zoning.
-            3. Ensure worker safety measures are in place.
-            """)
+    st.subheader("ขั้นตอนการขอใบอนุญาต")
+    st.write("1. เตรียมเอกสารแบบ รง.4")
+    st.write("2. ยื่นต่อกรมโรงงานอุตสาหกรรม")
 
-elif menu == "Document Generator":
-    st.header("Document Generator")
-    # Mock example for document creation
-    st.write("AI is generating documents based on your input...")
-    generate_button = st.button("Generate Documents")
-    if generate_button:
-        st.success("Documents generated successfully!")
-        st.download_button(
-            label="Download Environmental Plan",
-            data="Sample Environmental Plan Document",
-            file_name="environmental_plan.docx",
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        )
-        st.download_button(
-            label="Download Process Flow Diagram",
-            data="Sample Process Flow Diagram Document",
-            file_name="process_flow_diagram.pdf",
-            mime="application/pdf"
-        )
+    # Q&A Bot
+    st.subheader("มีคำถามเพิ่มเติมหรือไม่?")
+    user_question = st.text_input("ป้อนคำถามที่นี่")
+    if st.button("ถาม"):
+        st.write(f"คำตอบสำหรับ: {user_question}")  # เชื่อมต่อกับ RAG ได้ที่นี่
+
+    # Feedback
+    st.subheader("ให้ความคิดเห็น")
+    feedback = st.text_area("ความคิดเห็น")
+    if st.button("ส่งความคิดเห็น"):
+        st.success("ขอบคุณสำหรับความคิดเห็น!")
